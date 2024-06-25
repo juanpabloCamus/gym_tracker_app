@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             label: 'Profile',
-            icon: Icon(Icons.sports_gymnastics),
+            icon: Icon(Icons.person),
           ),
         ],
       ),

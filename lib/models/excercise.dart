@@ -1,4 +1,4 @@
-import './record.dart';
+import 'package:gym_tracker_app/models/record.dart';
 
 class Excercise {
   final String name;
