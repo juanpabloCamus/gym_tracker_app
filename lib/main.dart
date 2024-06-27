@@ -2,9 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:gym_tracker_app/screens/exercises.dart';
 import 'package:gym_tracker_app/screens/home.dart';
 import 'package:gym_tracker_app/screens/profile.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
-void main() {
+Future<Database> initDatabase() async {
+  // Obtén el directorio de la base de datos
+  final String databasePath = await getDatabasesPath();
+  final String path = join(databasePath, 'gym.db');
+
+  await deleteDatabase(path);
+
+  // Abre la base de datos
+  return await openDatabase(
+    path,
+    version: 1,
+    onCreate: (Database db, int version) async {
+      // Crear la tabla cuando la base de datos es creada por primera vez
+      return await db.execute(
+        'CREATE TABLE excercises(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)',
+      );
+    },
+  );
+}
+
+void main() async {
   runApp(const MyApp());
+  final db = await initDatabase();
+  await db.rawInsert('INSERT INTO excercises (name) VALUES (?)', ['pecho']);
+  final result = await db.rawQuery('SELECT * FROM excercises');
+  print(result);
 }
 
 class MyApp extends StatelessWidget {
